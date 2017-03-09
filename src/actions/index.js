@@ -4,11 +4,10 @@ import { browserHistory } from 'react-router';
 import {
     AUTH_USER,
     UNAUTH_USER,
-    AUTH_ERROR
+    AUTH_ERROR,
+    FETCH_MESSAGE
 } from './types';
 export function signinUser({email, password}) {
-
-    console.log(email, password);
     return dispatch => {
         //submit email/password to the server
         axios.post(`${ROOT_URL}/signin`, {email, password})
@@ -28,11 +27,24 @@ export function signinUser({email, password}) {
         //if request is bad
         //-show an error
     }
-
-
 }
 
-export function  authError(error) {
+export function signupuser({email, password}) {
+    return  dispatch => {
+        axios.post(`${ROOT_URL}/signup`, {email, password})
+            .then(response => {
+                dispatch({type: AUTH_USER});
+                localStorage.setItem('token', response.data.token);
+                browserHistory.push('/feature');
+            })
+            .catch(response => {
+                dispatch(authError(response.response.data.error));
+            });
+
+    }
+}
+
+export function authError(error) {
     return {
         type: AUTH_ERROR,
         payload: error
@@ -43,5 +55,17 @@ export function signoutuser() {
     localStorage.removeItem('token');
     return {
         type: UNAUTH_USER
+    }
+}
+
+export function fetchMessage() {
+    return dispatch => {
+        axios.get(ROOT_URL, {
+            headers: {authorization: localStorage.getItem('token')}
+        })
+            .then(response => dispatch({
+                type: FETCH_MESSAGE,
+                payload: response.data.message
+            }))
     }
 }
