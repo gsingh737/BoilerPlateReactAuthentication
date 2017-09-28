@@ -1,5 +1,7 @@
 # ReduxSimpleStarter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/gsingh737/BoilerPlateReactAuthentication.svg)](https://greenkeeper.io/)
+
 Interested in learning [Redux](https://www.udemy.com/react-redux/)?
 
 ###Getting Started###
